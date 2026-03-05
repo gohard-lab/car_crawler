@@ -4,6 +4,10 @@ import time
 import sys
 import asyncio
 import io
+import os
+
+# 스트림릿 클라우드 깡통 서버에 크롬 브라우저를 강제로 설치하게 만드는 마법의 주문
+os.system("playwright install chromium")
 
 # --- [윈도우 환경 Streamlit + Playwright 충돌 방지 코드] ---
 if sys.platform == "win32":
