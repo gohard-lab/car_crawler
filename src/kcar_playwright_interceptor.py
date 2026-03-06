@@ -24,7 +24,7 @@ def intercept_kcar_api(keyword):
     
     with sync_playwright() as p:
         # 브라우저가 움직이는 것을 볼 수 있도록 당분간 False 유지
-        browser = p.chromium.launch(headless=True)
+        browser = p.chromium.launch(headless=False)
         context = browser.new_context(
             user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
         )
