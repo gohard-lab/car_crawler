@@ -6,6 +6,19 @@ import asyncio
 import io
 import os
 
+
+from tracker_web import log_app_usage
+
+# ✅ 변경 후 (최초 1회 접속 시에만 실행됨)
+if "has_logged_execution" not in st.session_state:
+    # 함수가 성공했는지(True) 로딩 때문에 실패했는지(False) 결과를 받습니다.
+    is_logged = log_app_usage("Kcar_crawler", "crawler_stated")
+    
+    # 완전히 DB 기록에 성공했을 때만 도장을 쾅 찍어줍니다!
+    if is_logged:
+        st.session_state["has_logged_execution"] = True
+
+
 # 스트림릿 클라우드 깡통 서버에 크롬 브라우저를 강제로 설치하게 만드는 마법의 주문
 os.system("playwright install chromium")
 
