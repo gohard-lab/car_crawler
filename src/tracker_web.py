@@ -113,7 +113,8 @@ def log_app_usage(app_name="unknown_app", action="page_view", details=None):
             "region": loc_data['region'] if loc_data else "Unknown",
             "city": loc_data['city'] if loc_data else "Unknown",
             "lat": loc_data['lat'] if loc_data else 0.0,
-            "lon": loc_data['lon'] if loc_data else 0.0
+            "lon": loc_data['lon'] if loc_data else 0.0,
+            "details": details if details else None
         }
         
         client.table('usage_logs').insert(log_data, returning='minimal').execute()
