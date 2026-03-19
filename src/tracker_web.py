@@ -89,7 +89,7 @@ def get_location_data():
 #     return None
 
 # def log_app_usage(app_name, action="page_view"):
-def log_app_usage(app_name="unknown_app", action="page_view"):
+def log_app_usage(app_name="unknown_app", action="page_view", details=None):
     """Supabase에 사용자 활동을 기록하고 성공 여부를 반환합니다."""
     loc_data = get_location_data()
     
