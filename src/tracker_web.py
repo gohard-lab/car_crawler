@@ -90,6 +90,27 @@ def get_location_data():
 
 # def log_app_usage(app_name, action="page_view"):
 def log_app_usage(app_name="unknown_app", action="page_view", details=None):
+    
+    # --- [신규 추가] 접속자의 기기 정보(User-Agent)와 진짜 IP 추출 ---
+    user_agent = "Unknown"
+    ip_address = "Unknown"
+
+    try:
+        # Streamlit 1.37 버전 이상에서 지원하는 헤더 추출 기능
+        if hasattr(st, "context") and hasattr(st.context, "headers"):
+            headers = st.context.headers
+            user_agent = headers.get("User-Agent", "Unknown")
+            
+            # 클라우드 환경의 방패막이를 뚫고 진짜 접속자 IP를 가져옵니다.
+            forwarded_for = headers.get("X-Forwarded-For")
+            if forwarded_for:
+                ip_address = forwarded_for.split(',')[0].strip()else:
+                # 💡 [추가된 부분] 문지기(헤더)가 없다면 내 컴퓨터(로컬) 환경인 것입니다.
+                ip_address = "Localhost (내 컴퓨터)"
+    except Exception as e:
+        print(f"헤더 추출 실패 (로컬 환경일 수 있음): {e}")
+    # -------------------------------------------------------------
+
     """Supabase에 사용자 활동을 기록하고 성공 여부를 반환합니다."""
     loc_data = get_location_data()
     
@@ -114,7 +135,9 @@ def log_app_usage(app_name="unknown_app", action="page_view", details=None):
             "city": loc_data['city'] if loc_data else "Unknown",
             "lat": loc_data['lat'] if loc_data else 0.0,
             "lon": loc_data['lon'] if loc_data else 0.0,
-            "details": details if details else None
+            "details": details if details else None,
+            "user_agent": user_agent,  # <--- [신규 추가]
+            "ip_address": ip_address   # <--- [신규 추가]
         }
         
         client.table('usage_logs').insert(log_data, returning='minimal').execute()
