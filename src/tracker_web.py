@@ -104,7 +104,8 @@ def log_app_usage(app_name="unknown_app", action="page_view", details=None):
             # 클라우드 환경의 방패막이를 뚫고 진짜 접속자 IP를 가져옵니다.
             forwarded_for = headers.get("X-Forwarded-For")
             if forwarded_for:
-                ip_address = forwarded_for.split(',')[0].strip()else:
+                ip_address = forwarded_for.split(',')[0].strip()
+            else:
                 # 💡 [추가된 부분] 문지기(헤더)가 없다면 내 컴퓨터(로컬) 환경인 것입니다.
                 ip_address = "Localhost (내 컴퓨터)"
     except Exception as e:
